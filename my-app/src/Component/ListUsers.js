@@ -1,6 +1,6 @@
 import React from "react";
 import { users } from "../Utils/Mocks/Users";
-import { Box, Container, List, ListItem, ListItemText, Typography } from "@mui/material";
+import { Box, Container, List, ListItem, Typography } from "@mui/material";
 
 /**
  * 
