@@ -37,6 +37,44 @@ jobs:
      - name: Configure GitHub Pages
        id: pages
        uses: actions/configure-pages@v3
+         # step 
+        # check if version is updated
+          # run |
+          # stocker variable avec version du package en ligne
+          # npm view ci-cd-ynov-marinaperezynov version
+          #  stocker numéro de version du projet
+          #  puis on compare les deux
+          #  si pareil on publish sinon on ne fait rien
+     - name: Check if version is updated
+       id: check_version
+       run: |
+          # Get the latest version from the package.json file in the repository
+          LATEST_VERSION=$(jq -r '.version' my-app/package.json)
+          # Get the latest version from the npm registry
+          NPM_VERSION=$(npm view ci-cd-ynov-marinaperezynov version)
+          echo "LATEST_VERSION=${LATEST_VERSION}" >> $GITHUB_ENV
+          echo "NPM_VERSION=${NPM_VERSION}" >> $GITHUB_ENV
+          if [ "$LATEST_VERSION" == "$NPM_VERSION" ]; then
+            echo "Version is up to date."
+            echo "version_updated=false" >> $GITHUB_ENV
+          else
+            echo "Version is not up to date."
+            echo "version_updated=true" >> $GITHUB_ENV
+          fi
+     - name: Publish to npm if version is updated
+       if: env.version_updated == 'true'
+       env:
+         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+       run: |
+         cd my-app
+         npm run build-npm
+         npm version patch
+         npm publish
+         git config --global user.email "marina.perez@ynov.com"
+         git config --global user.name "Marina Perez"
+         git add .
+         git commit -m "update version"
+         git push
      - name: Upload GitHub Pages artifact
        uses: actions/upload-pages-artifact@v3
        with:
@@ -56,8 +94,10 @@ jobs:
        pages: write
        id-token: write
      needs: build_test
+
       # Specify runner + deployment step
      steps:
        - name: Deploy to GitHub Pages
          id: deployment
          uses: actions/deploy-pages@v4
+
