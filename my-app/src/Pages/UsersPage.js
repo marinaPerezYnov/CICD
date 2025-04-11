@@ -3,10 +3,9 @@ import React from 'react';
 import { Container } from '@mui/material';
 import ListUsers from './../Component/ListUsers';
 
-const LoginPage = () => {
-    console.log("test");
+const UsersPage = () => {
     return (
-        <Container sx={{
+        <Container data-testid="users-page-container" sx={{
             height: '100vh',
             marginLeft: 'auto',
             marginRight: 'auto',
@@ -18,4 +17,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default UsersPage;

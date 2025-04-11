@@ -3,22 +3,22 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { Container } from '@mui/material';
-import Form from './../Component/Form';
+import Form from '../Component/Form';
 
-const LoginPage = () => {
-    console.log("test");
+const SaveUserDatasPage = () => {
+
     return (
-        <Container sx={{
+        <Container data-testid="login-form-page-container" sx={{
             height: '100vh',
             marginLeft: 'auto',
             marginRight: 'auto',
         }}>
             <Container>
                 <Form />
-                <ToastContainer />
+                <ToastContainer data-testid="toast-container" />
             </Container>
         </Container>
     );
 };
 
-export default LoginPage;
+export default SaveUserDatasPage;

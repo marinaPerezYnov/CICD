@@ -53,5 +53,12 @@
     "@babel/plugin-transform-react-jsx": "^7.25.9",
     "gh-pages": "^6.3.0",
     "react-test-renderer": "^19.0.0"
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "src/index.js",
+      "src/reportWebVitals.js"
+    ]
   }
 }

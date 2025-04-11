@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './App.css';
 
-import LoginPage from "./Pages/LoginPage";
+import SaveUserDatasPage from "./Pages/SaveUserDatasPage";
 import UsersPage from "./Pages/UsersPage";
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
     <Router>
       <div className="App">
           <Routes>
-            <Route exact path="/CICD" element={<LoginPage />}></Route>
+            <Route exact path="/CICD" element={<SaveUserDatasPage />}></Route>
             <Route exact path="/CICD/listUsers" element={<UsersPage />}></Route>
           </Routes>
       </div>

@@ -32,13 +32,4 @@ describe('Form Component', () => {
     expect(toast.success).toHaveBeenCalledWith('Données sauvegardées avec succès !');
     expect(screen.getByTestId('nom-input').value).toBe('');
   });
-
-  // test('toaster d’erreur et erreurs correspondantes en rouge', () => {
-    // render(<Form />);
-    // fireEvent.change(screen.getByTestId('nom-input'), { target: { value: '123' } });
-    // fireEvent.blur(screen.getByTestId('nom-input'));
-// 
-    // expect(toast.error).toHaveBeenCalledWith('Nom invalide. Veuillez entrer un nom sans caractères spéciaux.');
-    // expect(screen.getByText(/nom invalide/i)).toHaveStyle('color: red');
-  // });
 });
