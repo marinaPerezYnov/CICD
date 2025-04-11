@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+### Getting started with Create React App
+This project was bootstrapped with Create React App.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
+## Available scripts
 In the project directory, you can run:
 
-### `npm start`
+# npm start
+Runs the app in development mode.
+Open http://localhost:3000 to view it in your browser.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
+The page will reload when you make changes.
 You may also see any lint errors in the console.
 
-### `npm test`
+# npm test
+Launches the test runner in non-interactive mode with code coverage.Use this to run all tests and generate coverage reports.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# npm run build
+Builds the app for production to the build folder.
+See the section about deployment.
 
-### `npm run build`
+# npm run build-npm
+Custom build script for creating a production-ready distribution using Babel.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+It does the following:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Removes the dist folder.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Recreates the dist folder.
 
-### `npm run eject`
+Transpiles the src code using Babel and copies all necessary files to dist.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+This is useful for projects designed to publish as npm packages.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# npm run eject
+Note: This is a one-way operation. Once you eject, you can't go back!
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Removes the single build dependency from your project. You gain full control of configuration files (e.g., Webpack, Babel, ESLint), allowing complete customization. However, you will need to manage dependencies manually.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Use this script with caution.
 
-## Learn More
+# npm run predeploy
+Runs npm run build before deploying your app.
+This script ensures the app is ready for deployment with a fresh production build.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# npm run deploy
+Deploys the app to GitHub Pages using the gh-pages package.
+Make sure your repository is correctly configured for GitHub Pages deployment before running this command.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# npm run jsdoc
+Generates documentation for your project using JSDoc.
+It takes the README.md file as the root documentation and uses jsdoc.config.json for additional configuration.
+The documentation is stored in the public/docs folder.

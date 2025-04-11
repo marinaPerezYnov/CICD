@@ -7,9 +7,8 @@ import { MemoryRouter } from "react-router-dom";
 describe("Tests du routeur de l'application", () => {
   test("rend la page d'enregistrement des données utilisateur pour la route /CICD", async () => {
     render(
-      <MemoryRouter initialEntries={["/CICD"]}> {/* Navigation vers la route correcte */}
-        {/* <App /> */}
-        <App disableRouter={true} /> {/* Désactive le Router interne */}
+      <MemoryRouter initialEntries={["/CICD"]}>
+        <App disableRouter={true} />
       </MemoryRouter>
     );
 
@@ -29,9 +28,8 @@ describe("Tests du routeur de l'application", () => {
   test("rend la page de liste des utilisateurs pour la route /CICD/listUsers", async () => {
 
     render(
-      <MemoryRouter initialEntries={["/CICD/listUsers"]}> {/* Navigation vers la route correcte */}
-        {/* <App /> */}
-        <App disableRouter={true} /> {/* Désactive le Router interne */}
+      <MemoryRouter initialEntries={["/CICD/listUsers"]}> 
+        <App disableRouter={true} />
       </MemoryRouter>
     );
 
