@@ -37,14 +37,6 @@ jobs:
      - name: Configure GitHub Pages
        id: pages
        uses: actions/configure-pages@v3
-         # step 
-        # check if version is updated
-          # run |
-          # stocker variable avec version du package en ligne
-          # npm view ci-cd-ynov-marinaperezynov version
-          #  stocker numéro de version du projet
-          #  puis on compare les deux
-          #  si pareil on publish sinon on ne fait rien
      - name: Check if version is updated
        id: check_version
        run: |
