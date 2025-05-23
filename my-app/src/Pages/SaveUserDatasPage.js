@@ -15,7 +15,7 @@ const SaveUserDatasPage = () => {
         }}>
             <Container>
                 <Form />
-                {/* <ToastContainer data-testid="toast-container" /> */}
+                <ToastContainer data-testid="toast-container" />
             </Container>
         </Container>
     );
