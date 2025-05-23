@@ -1,12 +1,30 @@
-import React from "react";
-import { users } from "../Utils/Mocks/Users";
+import React, { useEffect } from "react";
 import { Box, Container, List, ListItem, Typography } from "@mui/material";
+import axios from "axios";
 
 /**
  * 
  * Liste des utilisateurs
  */
 const ListUsers = () => {
+
+    const [userList, setUserList] = React.useState([]);
+
+    const getUsers = async () => {
+
+        axios.get('http://localhost:8000/users')
+        .then((response) => {
+            setUserList(response.data['utilisateurs']);
+        })
+        .catch((error) => {
+            console.error('Error fetching users:', error);
+        });
+    }
+
+    useEffect(() => {
+        getUsers();
+    }, []);
+
     return (
         <Container sx={{
             marginTop: '30px',
@@ -27,7 +45,10 @@ const ListUsers = () => {
                 alignItems: 'center',
                 flexWrap: 'wrap',
             }}>
-            {users.map((user, index) => (
+                <p>1 user(s) already registered</p>
+            {
+            userList?.length > 0 
+            && userList.map((user, index) => (
                 <List key={index}>
                     <ListItem sx={{
                         display: 'flex',

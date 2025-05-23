@@ -15,6 +15,8 @@ import {
     isValidEmail
 } from '../Utils/Validate/Validate';
 
+import axios from 'axios';
+
 const Form = () => {
     const [mail, setMail] = useState('');
     const [nom, setNom] = useState('');
@@ -40,24 +42,28 @@ const Form = () => {
     }, [mail, nom, prenom, dateNaissance, ville, codePostal]);
     
     const handleSubmit = () => {
-        // Sauvegarde dans le local storage
-        localStorage.setItem('name', nom);
-        localStorage.setItem('prenom', prenom);
-        localStorage.setItem('email', mail);
-        localStorage.setItem('dateNaissance', dateNaissance);
-        localStorage.setItem('ville', ville);
-        localStorage.setItem('codePostal', codePostal);
-
         // Affichage du toaster de succès
         toast.success('Données sauvegardées avec succès !');
-
-        // Vidage des champs
-        setNom('');
-        setPrenom('');
-        setMail('');
-        setDateNaissance('');
-        setVille('');
-        setCodePostal('');
+        console.log(nom, prenom, mail, dateNaissance, ville, codePostal);
+        
+        // Url de création d'un nouvel utilisateur
+        axios.post('http://localhost:8000/users', {
+            nom,
+            prenom,
+            email: mail,
+            date_naissance: dateNaissance,
+            ville,
+            code_postal: codePostal,
+            pays: "France", // ou une valeur par défaut
+            nombre_achat: 0 // ou une valeur par défaut
+        })
+        .then((response) => {
+            console.log("response : ", response);
+            console.log("res : ", response.data);
+        })
+        .catch((error) => {
+            console.error("error : ", error);
+        });
     };
 
     return (
