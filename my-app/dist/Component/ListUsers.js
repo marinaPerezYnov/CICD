@@ -34,8 +34,6 @@ var ListUsers = function ListUsers() {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            // mysql-marina-perez.alwaysdata.net
-            // axios.get('http://mysql-marina-perez.alwaysdata.net/users')
             _axios["default"].get('http://localhost:8000/users').then(function (response) {
               console.log('Users fetched successfully:', response);
               setUserList(response.data['utilisateurs']);

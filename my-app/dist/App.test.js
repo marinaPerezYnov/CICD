@@ -18,7 +18,7 @@ describe("Tests du routeur de l'application", function () {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           (0, _react2.render)(/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.MemoryRouter, {
-            initialEntries: ["/CICD"],
+            initialEntries: ["/"],
             children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_App["default"], {
               disableRouter: true
             })
@@ -50,7 +50,7 @@ describe("Tests du routeur de l'application", function () {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           (0, _react2.render)(/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.MemoryRouter, {
-            initialEntries: ["/CICD/listUsers"],
+            initialEntries: ["/listUsers"],
             children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_App["default"], {
               disableRouter: true
             })

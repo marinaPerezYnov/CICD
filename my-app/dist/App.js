@@ -31,23 +31,23 @@ function App(_ref) {
       children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Routes, {
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
           exact: true,
-          path: "/CICD",
+          path: "/",
           element: /*#__PURE__*/(0, _jsxRuntime.jsx)(_SaveUserDatasPage["default"], {})
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
           exact: true,
-          path: "/CICD/listUsers",
+          path: "/listUsers",
           element: /*#__PURE__*/(0, _jsxRuntime.jsx)(_UsersPage["default"], {})
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
           exact: true,
-          path: "/CICD/admin",
+          path: "/admin",
           element: /*#__PURE__*/(0, _jsxRuntime.jsx)(_AdminPage["default"], {})
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
           exact: true,
-          path: "/CICD/admin/s-inscrire",
+          path: "/admin/s-inscrire",
           element: /*#__PURE__*/(0, _jsxRuntime.jsx)(_RegisterPage["default"], {})
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
           exact: true,
-          path: "/CICD/admin/se-connecter",
+          path: "/admin/se-connecter",
           element: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ConnectionPage["default"], {})
         })]
       })
