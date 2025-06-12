@@ -2,7 +2,7 @@
   "name": "ci-cd-ynov-marinaperezynov",
   "version": "0.1.0",
   "private": false,
-  "homepage": "https://marinaperezynov.github.io/",
+  "homepage": "https://marinaperezynov.github.io/CICD",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",

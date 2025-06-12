@@ -17,11 +17,11 @@ function App({ disableRouter }) {
     <Wrapper>
       <div className="App">
           <Routes>
-            <Route exact path="/CICD" element={<SaveUserDatasPage />}></Route>
-            <Route exact path="/CICD/listUsers" element={<UsersPage />}></Route>
-            <Route exact path="/CICD/admin" element={<AdminPage />}></Route>
-            <Route exact path="/CICD/admin/s-inscrire" element={<RegisterPage />}></Route>
-            <Route exact path="/CICD/admin/se-connecter" element={<ConnectionPage />}></Route>
+            <Route exact path="/" element={<SaveUserDatasPage />}></Route>
+            <Route exact path="/listUsers" element={<UsersPage />}></Route>
+            <Route exact path="/admin" element={<AdminPage />}></Route>
+            <Route exact path="/admin/s-inscrire" element={<RegisterPage />}></Route>
+            <Route exact path="/admin/se-connecter" element={<ConnectionPage />}></Route>
           </Routes>
       </div>
     </Wrapper>
