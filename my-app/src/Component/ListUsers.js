@@ -47,10 +47,12 @@ const ListUsers = () => {
             }}>
                 <p>1 user(s) already registered</p>
             {
-            userList?.length > 0 
-            && userList.map((user, index) => (
+            userList?.length > 0 ? (
+                userList.map((user, index) => (
                 <List key={index}>
-                    <ListItem sx={{
+                    <ListItem 
+                    role="listitem"
+                    sx={{
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -73,7 +75,11 @@ const ListUsers = () => {
                         </Box>
                     </ListItem>
                 </List>
-            ))}
+            )))
+        :
+        <p>
+            Aucun utilisateur trouvé.
+        </p>}
             </Container>
         </Container>
     );
