@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import List
 import jwt
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 import datetime
 import hashlib
 
@@ -54,7 +55,6 @@ app.add_middleware(
 # --- UTILISATEURS ---
 @app.get("/users")
 async def get_users():
-    # Connexion à la base via variables d'environnement
     # Connexion à la base via variables d'environnement
     conn = mysql.connector.connect(
         database=os.environ["MYSQL_DATABASE"],
