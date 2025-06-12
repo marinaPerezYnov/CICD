@@ -9,7 +9,9 @@ var _react = _interopRequireWildcard(require("react"));
 var _material = require("@mui/material");
 var _reactToastify = require("react-toastify");
 var _Validate = require("../Utils/Validate/Validate");
+var _axios = _interopRequireDefault(require("axios"));
 var _jsxRuntime = require("react/jsx-runtime");
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
@@ -55,24 +57,29 @@ var Form = function Form() {
     }
   }, [mail, nom, prenom, dateNaissance, ville, codePostal]);
   var handleSubmit = function handleSubmit() {
-    // Sauvegarde dans le local storage
-    localStorage.setItem('name', nom);
-    localStorage.setItem('prenom', prenom);
-    localStorage.setItem('email', mail);
-    localStorage.setItem('dateNaissance', dateNaissance);
-    localStorage.setItem('ville', ville);
-    localStorage.setItem('codePostal', codePostal);
-
     // Affichage du toaster de succès
     _reactToastify.toast.success('Données sauvegardées avec succès !');
+    console.log(nom, prenom, mail, dateNaissance, ville, codePostal);
 
-    // Vidage des champs
-    setNom('');
-    setPrenom('');
-    setMail('');
-    setDateNaissance('');
-    setVille('');
-    setCodePostal('');
+    // mysql-marina-perez.alwaysdata.net
+    // Url de création d'un nouvel utilisateur
+    // axios.post('http://mysql-marina-perez.alwaysdata.net/users', {
+    _axios["default"].post('http://localhost:8000/users', {
+      nom: nom,
+      prenom: prenom,
+      email: mail,
+      date_naissance: dateNaissance,
+      ville: ville,
+      code_postal: codePostal,
+      pays: "France",
+      // ou une valeur par défaut
+      nombre_achat: 0 // ou une valeur par défaut
+    }).then(function (response) {
+      console.log("response : ", response);
+      console.log("res : ", response.data);
+    })["catch"](function (error) {
+      console.error("error : ", error);
+    });
   };
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_material.Container, {
     maxWidth: "sm",
@@ -80,7 +87,12 @@ var Form = function Form() {
       border: '1px solid #ccc',
       padding: '20px'
     },
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_material.Typography, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_material.Button, {
+      onClick: function onClick() {
+        window.location.href = '/CICD/listUsers';
+      },
+      children: "Test"
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_material.Typography, {
       variant: "h4",
       component: "h1",
       gutterBottom: true,
@@ -95,6 +107,9 @@ var Form = function Form() {
         value: nom,
         onChange: function onChange(e) {
           setNom(e.target.value);
+        },
+        inputProps: {
+          'data-testid': 'nom-input'
         }
       })
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_material.FormControl, {
@@ -107,6 +122,9 @@ var Form = function Form() {
         value: prenom,
         onChange: function onChange(e) {
           setPrenom(e.target.value);
+        },
+        inputProps: {
+          'data-testid': 'prenom-input'
         }
       })
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_material.FormControl, {
@@ -119,6 +137,9 @@ var Form = function Form() {
         value: mail,
         onChange: function onChange(e) {
           setMail(e.target.value);
+        },
+        inputProps: {
+          'data-testid': 'mail-input'
         }
       })
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_material.FormControl, {
@@ -134,9 +155,13 @@ var Form = function Form() {
         children: "Date de naissance"
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_material.TextField, {
         type: "date",
+        label: "Date de naissance",
         value: dateNaissance,
         onChange: function onChange(e) {
           setDateNaissance(e.target.value);
+        },
+        inputProps: {
+          'data-testid': 'date-input'
         }
       })]
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_material.FormControl, {
@@ -149,6 +174,9 @@ var Form = function Form() {
         value: ville,
         onChange: function onChange(e) {
           return setVille(e.target.value);
+        },
+        inputProps: {
+          'data-testid': 'ville-input'
         }
       })
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_material.FormControl, {
@@ -161,6 +189,9 @@ var Form = function Form() {
         value: codePostal,
         onChange: function onChange(e) {
           setCodePostal(e.target.value);
+        },
+        inputProps: {
+          'data-testid': 'code-postal-input'
         }
       })
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_material.Button, {

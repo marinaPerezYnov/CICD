@@ -9,9 +9,9 @@ var _material = require("@mui/material");
 var _ListUsers = _interopRequireDefault(require("./../Component/ListUsers"));
 var _jsxRuntime = require("react/jsx-runtime");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
-var LoginPage = function LoginPage() {
-  console.log("test");
+var UsersPage = function UsersPage() {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_material.Container, {
+    "data-testid": "users-page-container",
     sx: {
       height: '100vh',
       marginLeft: 'auto',
@@ -22,4 +22,4 @@ var LoginPage = function LoginPage() {
     })
   });
 };
-var _default = exports["default"] = LoginPage;
+var _default = exports["default"] = UsersPage;
