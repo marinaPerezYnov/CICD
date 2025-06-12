@@ -67,6 +67,7 @@ async def get_users():
     sql_select_Query = "select * from utilisateur"
     cursor.execute(sql_select_Query)
     records = cursor.fetchall()
+
     return {'utilisateurs': 
         [
             {
@@ -85,7 +86,6 @@ async def get_users():
 
 @app.post("/users")
 async def add_user(user: UserCreate):
-    # Connexion à la base via variables d'environnement
     # Connexion à la base via variables d'environnement
     conn = mysql.connector.connect(
         database=os.environ["MYSQL_DATABASE"],
@@ -135,6 +135,7 @@ def get_current_admin(credentials: HTTPAuthorizationCredentials = Depends(securi
     # Ici, tu pourrais vérifier en base si l'email est bien admin
     return payload
 
+# CICD/admin/s-inscrire && /admin/register
 @app.post("/admin/register")
 async def admin_register(admin: AdminRegister):
     # Connexion à la base via variables d'environnement

@@ -46,7 +46,9 @@ const Form = () => {
         toast.success('Données sauvegardées avec succès !');
         console.log(nom, prenom, mail, dateNaissance, ville, codePostal);
         
+        // mysql-marina-perez.alwaysdata.net
         // Url de création d'un nouvel utilisateur
+        // axios.post('http://mysql-marina-perez.alwaysdata.net/users', {
         axios.post('http://localhost:8000/users', {
             nom,
             prenom,
@@ -71,6 +73,9 @@ const Form = () => {
             border: '1px solid #ccc',
             padding: '20px',
         }}>
+            <Button onClick={() => {
+                window.location.href = '/CICD/listUsers';
+            }}>Test</Button>
             <Typography variant="h4" component="h1" gutterBottom>
                 Sauvegarder les données
             </Typography>
