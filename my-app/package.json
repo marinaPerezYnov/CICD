@@ -58,6 +58,9 @@
     "react-test-renderer": "^19.0.0"
   },
   "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!axios)"
+    ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "src/index.js",
