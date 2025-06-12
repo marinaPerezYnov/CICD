@@ -28,7 +28,7 @@ describe('Form Component', () => {
     const button = screen.getByRole('button', { name: /Sauvegarder/i });
     fireEvent.click(button);
 
-    expect(localStorage.getItem('name')).toBe('Jean');
+    expect(localStorage.getItem('name')).toBe('Dupont');
     expect(toast.success).toHaveBeenCalledWith('Données sauvegardées avec succès !');
     expect(screen.getByTestId('nom-input').value).toBe('');
   });
