@@ -11,8 +11,6 @@ const ListUsers = () => {
     const [userList, setUserList] = React.useState([]);
 
     const getUsers = async () => { 
-        // mysql-marina-perez.alwaysdata.net
-        // axios.get('http://mysql-marina-perez.alwaysdata.net/users')
         axios.get('http://localhost:8000/users')
         .then((response) => {
             console.log('Users fetched successfully:', response);
