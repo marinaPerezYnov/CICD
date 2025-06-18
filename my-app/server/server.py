@@ -135,28 +135,6 @@ def get_current_admin(credentials: HTTPAuthorizationCredentials = Depends(securi
     # Ici, tu pourrais vérifier en base si l'email est bien admin
     return payload
 
-# CICD/admin/s-inscrire && /admin/register
-@app.post("/admin/register")
-async def admin_register(admin: AdminRegister):
-    # Connexion à la base via variables d'environnement
-    conn = mysql.connector.connect(
-        database=os.environ["MYSQL_DATABASE"],
-        user=os.environ["MYSQL_USER"],
-        password=os.environ["MYSQL_ROOT_PASSWORD"],
-        port=int(os.environ.get("PORT", 3306)),
-        host=os.environ["MYSQL_HOST"]
-    )
-    cursor = conn.cursor()
-    # Vérifier si l'admin existe déjà
-    cursor.execute("SELECT id FROM admin WHERE email=%s", (admin.email,))
-    if cursor.fetchone():
-        raise HTTPException(status_code=400, detail="Cet email existe déjà.")
-    # Créer l'admin
-    hashed = hash_password(admin.password)
-    cursor.execute("INSERT INTO admin (email, password) VALUES (%s, %s)", (admin.email, hashed))
-    conn.commit()
-    return {"message": "Compte admin créé avec succès !"}
-
 @app.post("/admin/login")
 async def admin_login(admin: AdminLogin):
     # Connexion à la base via variables d'environnement

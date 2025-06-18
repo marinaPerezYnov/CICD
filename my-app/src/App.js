@@ -6,7 +6,6 @@ import './App.css';
 import SaveUserDatasPage from "./Pages/SaveUserDatasPage";
 import UsersPage from "./Pages/UsersPage";
 import AdminPage from "./Pages/AdminPage";
-import RegisterPage from "./Pages/RegisterPage";
 import ConnectionPage from "./Pages/ConnectionPage";
 
 function App({ disableRouter }) {
@@ -20,7 +19,6 @@ function App({ disableRouter }) {
             <Route exact path="/" element={<SaveUserDatasPage />}></Route>
             <Route exact path="/listUsers" element={<UsersPage />}></Route>
             <Route exact path="/admin" element={<AdminPage />}></Route>
-            <Route exact path="/admin/s-inscrire" element={<RegisterPage />}></Route>
             <Route exact path="/admin/se-connecter" element={<ConnectionPage />}></Route>
           </Routes>
       </div>

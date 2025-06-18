@@ -68,10 +68,6 @@ jobs:
          git add .
          git commit -m "update version"
          git push
-    #  - name: Copy index.html to 404.html for GitHub Pages SPA routing
-    #    run: |
-    #      cd my-app
-    #      cp build/index.html build/404.html
      - name: Upload GitHub Pages artifact
        uses: actions/upload-pages-artifact@v3
        with:
