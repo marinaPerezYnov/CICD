@@ -73,11 +73,8 @@ const Form = () => {
             border: '1px solid #ccc',
             padding: '20px',
         }}>
-            <Button onClick={() => {
-                window.location.href = '/CICD/listUsers';
-            }}>Test</Button>
             <Typography variant="h4" component="h1" gutterBottom>
-                Sauvegarder les données
+                Sauvegarder les données 
             </Typography>
             <FormControl margin="normal" fullWidth required>
                 <TextField
