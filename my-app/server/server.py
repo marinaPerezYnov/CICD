@@ -132,9 +132,11 @@ def verify_jwt(token: str):
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Token invalide")
 
-security = HTTPBearer()
+# security = HTTPBearer()
 
-def get_current_admin(credentials: HTTPAuthorizationCredentials = Depends(security)):
+def get_current_admin(credentials: HTTPAuthorizationCredentials 
+                    #   = Depends(security)
+                      ):
     token = credentials.credentials
     payload = verify_jwt(token)
     # Ici, tu pourrais vérifier en base si l'email est bien admin
@@ -165,12 +167,16 @@ async def admin_login(admin: AdminLogin):
     return {"token": token}
 
 @app.get("/admin/me")
-async def get_me(credentials: HTTPAuthorizationCredentials = Depends(security)):
+async def get_me(credentials: HTTPAuthorizationCredentials 
+                #  = Depends(security)
+                 ):
     payload = verify_jwt(credentials.credentials)
     return {"isAdmin": True, "email": payload["email"]}
 
 @app.get("/admin/users")
-async def get_admin_users(credentials: HTTPAuthorizationCredentials = Depends(security)):
+async def get_admin_users(credentials: HTTPAuthorizationCredentials 
+                        #   = Depends(security)
+                          ):
     # Connexion à la base via variables d'environnement
     conn = mysql.connector.connect(
         database=os.environ["MYSQL_DATABASE"],
@@ -191,7 +197,9 @@ async def get_admin_users(credentials: HTTPAuthorizationCredentials = Depends(se
     return users
 
 @app.delete("/admin/users")
-async def delete_admin_users(body: DeleteUsersRequest, credentials: HTTPAuthorizationCredentials = Depends(security)):
+async def delete_admin_users(body: DeleteUsersRequest, credentials: HTTPAuthorizationCredentials 
+                            #  = Depends(security)
+                             ):
     # Connexion à la base via variables d'environnement
     conn = mysql.connector.connect(
         database=os.environ["MYSQL_DATABASE"],
