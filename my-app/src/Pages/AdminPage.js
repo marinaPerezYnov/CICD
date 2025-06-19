@@ -30,7 +30,19 @@ function AdminPage() {
             setIsAdmin(false);
             return;
         }
-
+        const fetchUsers = () => {
+            axios.get(`${API_URL}/users`, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            .then(res => {
+                setUsers(res.data);
+            })
+            .catch(error => {
+                console.error("Erreur lors du chargement des utilisateurs:", error);
+                setMessage("Erreur lors du chargement des utilisateurs");
+                setSuccess(false);
+            });
+        };
         // Vérifier si l'utilisateur courant est admin
         axios.get(`${API_URL}/me`, {
             headers: { Authorization: `Bearer ${token}` }
@@ -48,20 +60,6 @@ function AdminPage() {
                 setSuccess(false);
             });
     }, [token]);
-
-    const fetchUsers = () => {
-        axios.get(`${API_URL}/users`, {
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .then(res => {
-                setUsers(res.data);
-            })
-            .catch(error => {
-                console.error("Erreur lors du chargement des utilisateurs:", error);
-                setMessage("Erreur lors du chargement des utilisateurs");
-                setSuccess(false);
-            });
-    };
 
     const handleSelect = (userId) => {
         setSelectedUsers(prev =>
