@@ -38,7 +38,12 @@ class DeleteUsersRequest(BaseModel):
     ids: List[int]
 
 app = FastAPI()
-origins = ["*"]
+# Spécifie explicitement tous les domaines autorisés
+origins = [
+    "https://marinaperezynov.github.io",
+    "http://localhost:3000",  # Pour le développement local
+    "http://localhost:8000",  # Pour les tests locaux
+]
 
 @app.get("/")
 async def hello_world():
