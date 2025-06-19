@@ -44,11 +44,6 @@ const Form = () => {
     const handleSubmit = () => {
         // Affichage du toaster de succès
         toast.success('Données sauvegardées avec succès !');
-        console.log(nom, prenom, mail, dateNaissance, ville, codePostal);
-        
-        // mysql-marina-perez.alwaysdata.net
-        // Url de création d'un nouvel utilisateur
-        // axios.post('http://mysql-marina-perez.alwaysdata.net/users', {
         axios.post('http://localhost:8000/users', {
             nom,
             prenom,
@@ -61,7 +56,6 @@ const Form = () => {
         })
         .then((response) => {
             console.log("response : ", response);
-            console.log("res : ", response.data);
         })
         .catch((error) => {
             console.error("error : ", error);

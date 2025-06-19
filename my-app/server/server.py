@@ -113,7 +113,6 @@ async def add_user(user: UserCreate):
 # --- ADMIN ---
 
 def hash_password(password: str) -> str:
-    # Version simplifiée qui ne fait aucun hachage
     return password
 
 def create_jwt(email: str) -> str:
@@ -137,7 +136,6 @@ security = HTTPBearer()
 def get_current_admin(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
     payload = verify_jwt(token)
-    # Ici, tu pourrais vérifier en base si l'email est bien admin
     return payload
 
 @app.post("/admin/login") 
@@ -156,7 +154,7 @@ async def admin_login(admin: AdminLogin):
     cursor.execute("SELECT password FROM admin WHERE email=%s", (admin.email,))
     row = cursor.fetchone()
     
-    # Vérification simple sans hachage
+    # Vérification
     if not row or admin.password != row[0]:
         raise HTTPException(status_code=401, detail="Identifiants invalides")
     
@@ -176,7 +174,6 @@ async def debug_admin():
     )
     cursor = conn.cursor()
     
-    # Récupération des admins (sans les mots de passe pour la sécurité)
     cursor.execute("SELECT id, email FROM admin")
     admins = cursor.fetchall()
     
@@ -197,7 +194,7 @@ async def get_admin_users(credentials: HTTPAuthorizationCredentials = Depends(se
         port=int(os.environ.get("PORT", 3306)),
         host=os.environ["MYSQL_HOST"]
     )
-    # Optionnel : vérifier que l'utilisateur est admin via le token
+
     cursor = conn.cursor()
     sql_select_Query = "SELECT id, nom, email FROM utilisateur"
     cursor.execute(sql_select_Query)

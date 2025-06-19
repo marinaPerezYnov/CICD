@@ -23,22 +23,16 @@ describe("ListUsers Component", () => {
   test("should display the correct number of users", async () => {
     render(<ListUsers />);
     
-    // Utilisez queryByText pour chercher un texte qui devrait être présent pour chaque utilisateur
-    // Par exemple le message "1 user(s) already registered"
     expect(screen.getByText(/user\(s\) already registered/i)).toBeInTheDocument();
     
-    // Si vous voulez vraiment compter les éléments de liste, vous pouvez le faire ainsi:
-    // Attendez que les données soient chargées (approche asynchrone)
     const userItems = await screen.findAllByText(/Utilisateur \d+/i, {}, { timeout: 1000 });
     expect(userItems.length).toBe(users.length);
   });
 
   test("should display user details correctly", async () => {
     render(<ListUsers />);
-    
-    // Attendez que les données soient chargées
+
     for (const user of users) {
-      // Utilisez findByText pour attendre que le texte apparaisse
       await screen.findByText(`Nom : ${user.nom}`, {}, { timeout: 1000 });
       expect(screen.getByText(`Prenom: ${user.prenom}`)).toBeInTheDocument();
       expect(screen.getByText(`Email: ${user.email}`)).toBeInTheDocument();
