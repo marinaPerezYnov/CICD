@@ -36,7 +36,7 @@ function Header() {
             component={RouterLink} 
             to="/admin/se-connecter"
           >
-            Connexion
+            Connexion Admin
           </Button>
         </Box>
       </Toolbar>
