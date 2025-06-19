@@ -135,21 +135,27 @@ def get_current_admin(credentials: HTTPAuthorizationCredentials = Depends(securi
     # Ici, tu pourrais vérifier en base si l'email est bien admin
     return payload
 
-@app.post("/admin/login")
+@app.post("/admin/login") 
 async def admin_login(admin: AdminLogin):
-    # Connexion à la base via variables d'environnement
-    conn = mysql.connector.connect(
-        database=os.environ["MYSQL_DATABASE"],
-        user=os.environ["MYSQL_USER"],
-        password=os.environ["MYSQL_ROOT_PASSWORD"],
-        port=int(os.environ.get("PORT", 3306)),
-        host=os.environ["MYSQL_HOST"]
-    )
+    print(f"Tentative de connexion pour: {admin.email}")
+    conn = mysql.connector.connect(...)
     cursor = conn.cursor()
     cursor.execute("SELECT password FROM admin WHERE email=%s", (admin.email,))
     row = cursor.fetchone()
-    if not row or hash_password(admin.password) != row[0]:
+    print(f"Résultat de la requête: {row}")
+    
+    if not row:
+        print("Email non trouvé")
         raise HTTPException(status_code=401, detail="Identifiants invalides")
+    
+    hashed_password = hash_password(admin.password)
+    print(f"Mot de passe hashé envoyé: {hashed_password}")
+    print(f"Mot de passe hashé en DB: {row[0]}")
+    
+    if hashed_password != row[0]:
+        print("Mot de passe incorrect")
+        raise HTTPException(status_code=401, detail="Identifiants invalides")
+    
     token = create_jwt(admin.email)
     return {"token": token}
 
