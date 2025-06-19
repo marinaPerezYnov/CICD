@@ -114,7 +114,8 @@ async def add_user(user: UserCreate):
 # --- ADMIN ---
 
 def hash_password(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
+    # Version simplifiée qui ne fait aucun hachage
+    return password
 
 def create_jwt(email: str) -> str:
     payload = {
@@ -144,27 +145,45 @@ def get_current_admin(credentials: HTTPAuthorizationCredentials
 
 @app.post("/admin/login") 
 async def admin_login(admin: AdminLogin):
-    print(f"Tentative de connexion pour: {admin.email}")
-    conn = mysql.connector.connect(...)
+    # Connexion à la base de données
+    conn = mysql.connector.connect(
+        database=os.environ["MYSQL_DATABASE"],
+        user=os.environ["MYSQL_USER"],
+        password=os.environ["MYSQL_ROOT_PASSWORD"],
+        port=int(os.environ.get("PORT", 3306)),
+        host=os.environ["MYSQL_HOST"]
+    )
     cursor = conn.cursor()
+    
+    # Recherche de l'admin par email
     cursor.execute("SELECT password FROM admin WHERE email=%s", (admin.email,))
     row = cursor.fetchone()
-    print(f"Résultat de la requête: {row}")
     
-    if not row:
-        print("Email non trouvé")
+    # Vérification simple sans hachage
+    if not row or admin.password != row[0]:
         raise HTTPException(status_code=401, detail="Identifiants invalides")
     
-    hashed_password = hash_password(admin.password)
-    print(f"Mot de passe hashé envoyé: {hashed_password}")
-    print(f"Mot de passe hashé en DB: {row[0]}")
-    
-    if hashed_password != row[0]:
-        print("Mot de passe incorrect")
-        raise HTTPException(status_code=401, detail="Identifiants invalides")
-    
+    # Génération du token
     token = create_jwt(admin.email)
     return {"token": token}
+
+@app.get("/admin/debug")
+async def debug_admin():
+    # Connexion à la base de données
+    conn = mysql.connector.connect(
+        database=os.environ["MYSQL_DATABASE"],
+        user=os.environ["MYSQL_USER"],
+        password=os.environ["MYSQL_ROOT_PASSWORD"],
+        port=int(os.environ.get("PORT", 3306)),
+        host=os.environ["MYSQL_HOST"]
+    )
+    cursor = conn.cursor()
+    
+    # Récupération des admins (sans les mots de passe pour la sécurité)
+    cursor.execute("SELECT id, email FROM admin")
+    admins = cursor.fetchall()
+    
+    return {"admins": [{"id": a[0], "email": a[1]} for a in admins]}
 
 @app.get("/admin/me")
 async def get_me(credentials: HTTPAuthorizationCredentials 
