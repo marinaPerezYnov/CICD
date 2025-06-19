@@ -22,8 +22,8 @@ function AdminPage() {
     const [message, setMessage] = useState('');
     const [success, setSuccess] = useState(false);
 
-    // Récupère le token du sessionStorage
-    const token = sessionStorage.getItem('admin_token');
+    // Récupère le token du localStorage
+    const token = localStorage.getItem('admin_token');
 
     useEffect(() => {
         if (!token) {
@@ -35,6 +35,8 @@ function AdminPage() {
                 headers: { Authorization: `Bearer ${token}` }
             })
             .then(res => {
+                console.log("Liste des utilisateurs récupérée 1 :", res);
+                console.log("Liste des utilisateurs récupérée 2 :", res.data);
                 setUsers(res.data);
             })
             .catch(error => {
