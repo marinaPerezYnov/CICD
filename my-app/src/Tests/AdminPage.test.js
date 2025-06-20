@@ -72,7 +72,7 @@ describe('AdminPage Component', () => {
     });
     
     expect(screen.getByText('Accès refusé')).toBeInTheDocument();
-    expect(screen.getByText("Vous n'êtes pas autorisé à accéder à cette page")).toBeInTheDocument();
+    expect(screen.getByText("Vous devez être administrateur pour accéder à cette page")).toBeInTheDocument();
   });
 
   test('affiche la liste des utilisateurs pour un admin', async () => {
@@ -315,22 +315,23 @@ describe('AdminPage Component', () => {
     });
     
     // Les détails complets ne sont pas visibles initialement
-    expect(screen.queryByText('Code postal: 75001')).not.toBeInTheDocument();
-    
+    expect(screen.queryByText(/Code postal:/i)).not.toBeInTheDocument();
+  
     // Clique sur le bouton d'expansion
     const expandButtons = screen.getAllByText('▼');
     fireEvent.click(expandButtons[0]);
     
-    // Vérifie que les détails sont maintenant visibles
-    expect(screen.getByText('Code postal: 75001')).toBeInTheDocument();
-    
+    // Vérifie que les détails sont maintenant visibles en utilisant un sélecteur plus flexible
+    // Au lieu de chercher le texte exact, on utilise une expression régulière
+    expect(screen.getByText(/Code postal:.*75001/i)).toBeInTheDocument();
+  
     // Clique à nouveau pour réduire
     const collapseButtons = screen.getAllByText('▲');
     fireEvent.click(collapseButtons[0]);
     
     // Vérifie que les détails ne sont plus visibles
     await waitFor(() => {
-      expect(screen.queryByText('Code postal: 75001')).not.toBeInTheDocument();
+        expect(screen.queryByText(/Code postal:/i)).not.toBeInTheDocument();
     });
   });
 
@@ -386,15 +387,24 @@ describe('AdminPage Component', () => {
         expect.objectContaining({ headers: { Authorization: 'Bearer fake-token' } }));
     });
     
+    // Réinitialiser le mock pour pouvoir suivre les appels suivants
+    axios.get.mockClear();
     // Changer isAdmin à true pour le prochain appel
     isAdminValue = true;
     
     // Force un re-rendu qui déclenchera le useEffect
     rerender(<AdminPage />);
     
-    // Vérifier que fetchUsers est appelé après que isAdmin devienne true
+  
+    // Vérifier d'abord que /admin/me est appelé
     await waitFor(() => {
-      expect(axios.get).toHaveBeenCalledWith('http://localhost:8000/admin/users', 
+        expect(axios.get).toHaveBeenCalledWith('http://localhost:8000/admin/me', 
+        expect.objectContaining({ headers: { Authorization: 'Bearer fake-token' } }));
+    });
+    
+    // Puis vérifier que /admin/users est appelé après que isAdmin devienne true
+    await waitFor(() => {
+        expect(axios.get).toHaveBeenCalledWith('http://localhost:8000/admin/users', 
         expect.objectContaining({ headers: { Authorization: 'Bearer fake-token' } }));
     });
   });

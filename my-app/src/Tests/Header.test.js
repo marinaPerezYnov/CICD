@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import Header from '../Component/Header';
 
 // Mock de BrowserRouter pour éviter l'avertissement
@@ -15,23 +15,26 @@ jest.mock('react-router-dom', () => {
 describe('Header Component', () => {
   test('affiche tous les liens de navigation', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Header />
-      </BrowserRouter>
+      </MemoryRouter>
     );
     
     // Vérifie que tous les liens sont présents
     expect(screen.getByText('Accueil')).toBeInTheDocument();
     expect(screen.getByText('Liste Utilisateurs')).toBeInTheDocument();
     expect(screen.getByText('Admin')).toBeInTheDocument();
+
+    // const connexionLink = screen.getByRole('link', { name: /connexion/i });
+    // expect(connexionLink).toBeInTheDocument();
     expect(screen.getByText('Connexion Admin')).toBeInTheDocument();
   });
 
   test('les liens ont les bons attributs href', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Header />
-      </BrowserRouter>
+      </MemoryRouter>
     );
     
     // Vérifie que les liens pointent vers les bonnes routes
