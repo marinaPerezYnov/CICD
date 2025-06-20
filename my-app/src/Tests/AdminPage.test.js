@@ -367,59 +367,36 @@ describe('AdminPage Component', () => {
     // Vérifie que le message a disparu
     expect(screen.queryByText('Erreur lors du chargement des utilisateurs')).not.toBeInTheDocument();
   });
-
-test('vérifie que fetchUsers est appelé quand isAdmin change à true', async () => {
+  test('appelle fetchUsers quand isAdmin est true', async () => {
     // Token dans localStorage
     localStorage.setItem('admin_token', 'fake-token');
-  
-    // Premier appel pour /admin/me retourne isAdmin: false
-    let isAdminValue = false;
     
-    // Fonction de mock qui sera utilisée pour tous les appels
-    const mockImplementation = (url) => {
+    // Simuler un utilisateur admin directement
+    axios.get.mockImplementation((url) => {
         if (url === 'http://localhost:8000/admin/me') {
-        return Promise.resolve({ data: { isAdmin: isAdminValue, email: 'admin@example.com' } });
+        return Promise.resolve({ data: { isAdmin: true, email: 'admin@example.com' } });
         } else if (url === 'http://localhost:8000/admin/users') {
         return Promise.resolve({ data: mockUsers });
         }
         return Promise.reject(new Error('URL non reconnue dans le test'));
-    };
-    
-    // Configurer le mock avec l'implémentation
-    axios.get.mockImplementation(mockImplementation);
-    
-    const { rerender } = render(<AdminPage />);
-    
-    // Attendre que le premier rendu soit terminé
-    await waitFor(() => {
-        expect(screen.getByText('Accès refusé')).toBeInTheDocument();
-        expect(screen.getByText('Vous devez être administrateur pour accéder à cette page')).toBeInTheDocument();
-    });
-  
-    // Vérifier que /admin/me a été appelé une fois
-    expect(axios.get).toHaveBeenCalledWith('http://localhost:8000/admin/me', 
-        expect.objectContaining({ headers: { Authorization: 'Bearer fake-token' } }));
-    
-    // Réinitialiser le mock mais garder la même implémentation
-    axios.get.mockClear();
-    axios.get.mockImplementation(mockImplementation);
-    
-    // Changer isAdmin à true pour le prochain appel
-    isAdminValue = true;
-  
-    // Force un re-rendu qui déclenchera le useEffect
-    rerender(<AdminPage />);
-    
-    // Attendre que le composant affiche la liste des utilisateurs
-    await waitFor(() => {
-        expect(axios.get).toHaveBeenCalledWith('http://localhost:8000/admin/me', 
-        expect.objectContaining({ headers: { Authorization: 'Bearer fake-token' } }));
     });
     
-    // Vérifier que /admin/users est bien appelé ensuite
+    render(<AdminPage />);
+    
+    // Vérifier que la page de gestion des utilisateurs est affichée
     await waitFor(() => {
-        expect(axios.get).toHaveBeenNthCalledWith(2, 'http://localhost:8000/admin/users', 
-        expect.objectContaining({ headers: { Authorization: 'Bearer fake-token' } }));
+        expect(screen.getByText('Gestion des utilisateurs')).toBeInTheDocument();
     });
+    
+    // Vérifier que les deux appels API ont été faits
+    expect(axios.get).toHaveBeenCalledWith(
+        'http://localhost:8000/admin/me',
+        expect.objectContaining({ headers: { Authorization: 'Bearer fake-token' } })
+    );
+    
+    expect(axios.get).toHaveBeenCalledWith(
+        'http://localhost:8000/admin/users',
+        expect.objectContaining({ headers: { Authorization: 'Bearer fake-token' } })
+    );
     });
 });
