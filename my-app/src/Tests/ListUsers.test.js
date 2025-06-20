@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import ListUsers from "../Component/ListUsers";
 import { users } from "../Utils/Mocks/Users";
 import axios from "axios";
@@ -13,27 +13,44 @@ describe("ListUsers Component", () => {
     axios.get.mockResolvedValue({
       data: { utilisateurs: users }
     });
+
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+    jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
-  test("should render without crashing", () => {
-    render(<ListUsers />);
+  afterEach(() => {
+    console.log.mockRestore();
+    console.error.mockRestore();
+  });
+  
+  test("should render without crashing", async () => {
+    // Utiliser act pour envelopper le rendu et les mises à jour asynchrones
+    await act(async () => {
+      render(<ListUsers />);
+    });
     expect(screen.getByText(/Liste des utilisateurs/i)).toBeInTheDocument();
   });
 
   test("should display the correct number of users", async () => {
-    render(<ListUsers />);
+    // Utiliser act pour envelopper le rendu et les mises à jour asynchrones
+    await act(async () => {
+      render(<ListUsers />);
+    });
     
     expect(screen.getByText(/user\(s\) already registered/i)).toBeInTheDocument();
     
-    const userItems = await screen.findAllByText(/Utilisateur \d+/i, {}, { timeout: 1000 });
+    const userItems = screen.getAllByText(/Utilisateur \d+/i);
     expect(userItems.length).toBe(users.length);
   });
 
   test("should display user details correctly", async () => {
-    render(<ListUsers />);
+    // Utiliser act pour envelopper le rendu et les mises à jour asynchrones
+    await act(async () => {
+      render(<ListUsers />);
+    });
 
     for (const user of users) {
-      await screen.findByText(`Nom : ${user.nom}`, {}, { timeout: 1000 });
+      expect(screen.getByText(`Nom : ${user.nom}`)).toBeInTheDocument();
       expect(screen.getByText(`Prenom: ${user.prenom}`)).toBeInTheDocument();
       expect(screen.getByText(`Date de naissance: ${user.date_naissance}`)).toBeInTheDocument();
     }
