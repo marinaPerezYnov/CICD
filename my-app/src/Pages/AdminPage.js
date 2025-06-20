@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { 
   Container, 
@@ -9,9 +9,10 @@ import {
   List, 
   ListItem, 
   Checkbox, 
-  Divider,
   Alert,
-  Grid
+  Grid,
+  Collapse,
+  IconButton
 } from '@mui/material';
 
 function AdminPage() {
@@ -21,22 +22,23 @@ function AdminPage() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [message, setMessage] = useState('');
     const [success, setSuccess] = useState(false);
+    const [expandedUsers, setExpandedUsers] = useState({});
 
-    // Récupère le token du localStorage
-    const token = localStorage.getItem('admin_token');
+    // Récupère le token du sessionStorage
+    const token = sessionStorage.getItem('admin_token');
 
-    useEffect(() => {
-        if (!token) {
-            setIsAdmin(false);
-            return;
-        }
-        const fetchUsers = () => {
-            axios.get(`${API_URL}/users`, {
-                headers: { Authorization: `Bearer ${token}` }
-            })
+    const toggleUserExpand = (userId) => {
+        setExpandedUsers(prev => ({
+            ...prev,
+            [userId]: !prev[userId]
+        }));
+    };
+
+    const fetchUsers = useCallback(() => {
+        axios.get(`${API_URL}/users`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
             .then(res => {
-                console.log("Liste des utilisateurs récupérée 1 :", res);
-                console.log("Liste des utilisateurs récupérée 2 :", res.data);
                 setUsers(res.data);
             })
             .catch(error => {
@@ -44,7 +46,14 @@ function AdminPage() {
                 setMessage("Erreur lors du chargement des utilisateurs");
                 setSuccess(false);
             });
-        };
+    }, [token, API_URL]);
+
+    useEffect(() => {
+        if (!token) {
+            setIsAdmin(false);
+            return;
+        }
+
         // Vérifier si l'utilisateur courant est admin
         axios.get(`${API_URL}/me`, {
             headers: { Authorization: `Bearer ${token}` }
@@ -61,7 +70,7 @@ function AdminPage() {
                 setMessage("Vous n'êtes pas autorisé à accéder à cette page");
                 setSuccess(false);
             });
-    }, [token]);
+    }, [token, API_URL, fetchUsers]);
 
     const handleSelect = (userId) => {
         setSelectedUsers(prev =>
@@ -162,7 +171,7 @@ function AdminPage() {
                             }
                         }}
                     >
-                        Supprimer ({selectedUsers.length})
+                        🗑️ Supprimer ({selectedUsers.length})
                     </Button>
                 </Box>
 
@@ -173,16 +182,22 @@ function AdminPage() {
                 <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                     {users.length > 0 ? (
                         users.map((user) => (
-                            <React.Fragment key={user.id}>
+                            <Paper 
+                                key={user.id} 
+                                elevation={1} 
+                                sx={{ 
+                                    mb: 2, 
+                                    overflow: 'hidden',
+                                    transition: 'all 0.3s',
+                                    '&:hover': {
+                                        boxShadow: 3
+                                    }
+                                }}
+                            >
                                 <ListItem 
                                     sx={{
-                                        border: '1px solid #eee',
-                                        mb: 1,
-                                        borderRadius: 1,
-                                        transition: 'all 0.3s',
-                                        '&:hover': {
-                                            bgcolor: '#f5f5f5',
-                                        }
+                                        p: 2,
+                                        borderBottom: expandedUsers[user.id] ? '1px solid #eee' : 'none'
                                     }}
                                 >
                                     <Grid container alignItems="center" spacing={2}>
@@ -193,25 +208,64 @@ function AdminPage() {
                                                 inputProps={{ 'aria-label': 'select user' }}
                                             />
                                         </Grid>
-                                        <Grid item xs={2}>
-                                            <Typography variant="body2" color="textSecondary">
-                                                ID: {user.id}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={3}>
                                             <Typography variant="subtitle1">
-                                                {user.name}
+                                                {user.name || user.nom}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={5}>
+                                        <Grid item xs={3}>
                                             <Typography variant="body2">
                                                 {user.email}
                                             </Typography>
                                         </Grid>
+                                        <Grid item xs={4}>
+                                            <Typography variant="body2" color="textSecondary">
+                                                ID: {user.id}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={1}>
+                                            <IconButton
+                                                onClick={() => toggleUserExpand(user.id)}
+                                                size="small"
+                                            >
+                                                {expandedUsers[user.id] ? '▲' : '▼'}
+                                            </IconButton>
+                                        </Grid>
                                     </Grid>
                                 </ListItem>
-                                <Divider />
-                            </React.Fragment>
+                                
+                                <Collapse in={expandedUsers[user.id]} timeout="auto" unmountOnExit>
+                                    <Box sx={{ p: 3, bgcolor: '#f9f9f9' }}>
+                                        <Grid container spacing={2}>
+                                            <Grid item xs={6}>
+                                                <Typography variant="body2">
+                                                    <strong>Nom:</strong> {user.nom || user.name}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    <strong>Prénom:</strong> {user.prenom}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    <strong>Date de naissance:</strong> {user.date_naissance}
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <Typography variant="body2">
+                                                    <strong>Email:</strong> {user.email}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    <strong>Pays:</strong> {user.pays}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    <strong>Ville:</strong> {user.ville}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    <strong>Code postal:</strong> {user.code_postal}
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </Box>
+                                </Collapse>
+                            </Paper>
                         ))
                     ) : (
                         <Paper sx={{ p: 3, textAlign: 'center' }}>

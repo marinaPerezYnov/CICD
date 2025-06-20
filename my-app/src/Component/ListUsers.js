@@ -67,11 +67,15 @@ const ListUsers = () => {
                         <Box>
                             <p>Nom : {user.nom}</p>
                             <p>Prenom: {user.prenom}</p>
-                            <p>Email: {user.email}</p>
                             <p>Date de naissance: {user.date_naissance}</p>
-                            <p>Pays: {user.pays}</p>
-                            <p>Ville: {user.ville}</p>
-                            <p>Code postal: {user.code_postal}</p>
+                            { localStorage.getItem("admin_token") && (
+                                <>
+                                    <p>Email: {user.email}</p>
+                                    <p>Pays: {user.pays}</p>
+                                    <p>Ville: {user.ville}</p>
+                                    <p>Code postal: {user.code_postal}</p>
+                                </>
+                            )}
                         </Box>
                     </ListItem>
                 </List>

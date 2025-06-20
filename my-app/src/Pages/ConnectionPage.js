@@ -14,8 +14,6 @@ import {
   Paper,
   Alert
 } from '@mui/material';
-// Supprimer cette ligne
-// import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function ConnectionPage() {
     const API_URL = 'http://localhost:8000/admin/login';
