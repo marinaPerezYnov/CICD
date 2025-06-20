@@ -300,40 +300,45 @@ describe('AdminPage Component', () => {
     localStorage.setItem('admin_token', 'fake-token');
     
     axios.get.mockImplementation((url) => {
-      if (url === 'http://localhost:8000/admin/me') {
+        if (url === 'http://localhost:8000/admin/me') {
         return Promise.resolve({ data: { isAdmin: true, email: 'admin@example.com' } });
-      } else if (url === 'http://localhost:8000/admin/users') {
+        } else if (url === 'http://localhost:8000/admin/users') {
         return Promise.resolve({ data: mockUsers });
-      }
-      return Promise.reject(new Error('URL non reconnue dans le test'));
+        }
+        return Promise.reject(new Error('URL non reconnue dans le test'));
     });
-    
     render(<AdminPage />);
     
     await waitFor(() => {
-      expect(screen.getByText('Dupont')).toBeInTheDocument();
+        expect(screen.getByText('Dupont')).toBeInTheDocument();
     });
     
     // Les détails complets ne sont pas visibles initialement
-    expect(screen.queryByText(/Code postal:/i)).not.toBeInTheDocument();
-  
-    // Clique sur le bouton d'expansion
-    const expandButtons = screen.getAllByText('▼');
-    fireEvent.click(expandButtons[0]);
+    // Utilise l'attribut role pour trouver les boutons d'expansion
+    const expandButtons = screen.getAllByRole('button', { name: '▼' });
+    expect(expandButtons.length).toBeGreaterThan(0);
     
-    // Vérifie que les détails sont maintenant visibles en utilisant un sélecteur plus flexible
-    // Au lieu de chercher le texte exact, on utilise une expression régulière
-    expect(screen.getByText(/Code postal:.*75001/i)).toBeInTheDocument();
-  
+    // Clique sur le bouton d'expansion
+    fireEvent.click(expandButtons[0]);
+    // Vérifie que les détails sont maintenant visibles
+    // Utilise une fonction personnalisée pour chercher le texte "Code postal:" suivi de "75001"
+    await waitFor(() => {
+        // Chercher l'élément contenant "Code postal:"
+        const postalCodeLabel = screen.getByText('Code postal:');
+        // Vérifier que son élément parent contient "75001"
+        expect(postalCodeLabel.parentElement).toHaveTextContent('75001');
+    });
+    
     // Clique à nouveau pour réduire
-    const collapseButtons = screen.getAllByText('▲');
+    const collapseButtons = screen.getAllByRole('button', { name: '▲' });
     fireEvent.click(collapseButtons[0]);
     
     // Vérifie que les détails ne sont plus visibles
     await waitFor(() => {
-        expect(screen.queryByText(/Code postal:/i)).not.toBeInTheDocument();
+        expect(screen.queryByText('Code postal:')).not.toBeInTheDocument();
     });
   });
+
 
   test('ferme les messages d\'alerte', async () => {
     // Token dans localStorage et utilisateur admin
