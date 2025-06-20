@@ -24,8 +24,8 @@ function AdminPage() {
     const [success, setSuccess] = useState(false);
     const [expandedUsers, setExpandedUsers] = useState({});
 
-    // Récupère le token du sessionStorage
-    const token = sessionStorage.getItem('admin_token');
+    // Récupère le token du localStorage
+    const token = localStorage.getItem('admin_token');
 
     const toggleUserExpand = (userId) => {
         setExpandedUsers(prev => ({
