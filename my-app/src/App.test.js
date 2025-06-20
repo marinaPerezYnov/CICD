@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import App from '../App';
+import App from './App';
 
 // Mock simple des composants sans data-testid
-jest.mock('../Component/Header', () => () => <div>Header</div>);
-jest.mock('../Pages/SaveUserDatasPage', () => () => <div>SaveUserDatasPage</div>);
-jest.mock('../Pages/UsersPage', () => () => <div>UsersPage</div>);
-jest.mock('../Pages/AdminPage', () => () => <div>AdminPage</div>);
-jest.mock('../Pages/ConnectionPage', () => () => <div>ConnectionPage</div>);
+jest.mock('./Component/Header', () => () => <div>Header</div>);
+jest.mock('./Pages/SaveUserDatasPage', () => () => <div>SaveUserDatasPage</div>);
+jest.mock('./Pages/UsersPage', () => () => <div>UsersPage</div>);
+jest.mock('./Pages/AdminPage', () => () => <div>AdminPage</div>);
+jest.mock('./Pages/ConnectionPage', () => () => <div>ConnectionPage</div>);
 
 // Mock de react-router-dom de manière plus simple
 jest.mock('react-router-dom', () => ({
