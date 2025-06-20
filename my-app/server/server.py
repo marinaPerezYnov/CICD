@@ -42,6 +42,7 @@ origins = [
     "https://marinaperezynov.github.io",
     "http://localhost:3000",  # Pour le développement local
     "http://localhost:8000",  # Pour les tests locaux
+    "http://localhost:3306",  # MySQL port (bizarre comme origine, mais ajoutons-la)
 ]
 
 @app.get("/")
@@ -196,12 +197,21 @@ async def get_admin_users(credentials: HTTPAuthorizationCredentials = Depends(se
     )
 
     cursor = conn.cursor()
-    sql_select_Query = "SELECT id, nom, email FROM utilisateur"
+    sql_select_Query = "SELECT * FROM utilisateur"
     cursor.execute(sql_select_Query)
     records = cursor.fetchall()
     users = [
-        {"id": record[0], "name": record[1], "email": record[2]}
-        for record in records
+        {
+            'id': record[0],
+            'nom': record[1],
+            'prenom': record[2],
+            'email': record[3],
+            'date_naissance': record[4],
+            'pays': record[5],
+            'ville': record[6],
+            'code_postal': record[7],
+            'nombre_achat': record[8]
+        } for record in records
     ]
     return users
 

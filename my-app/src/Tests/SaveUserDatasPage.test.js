@@ -14,13 +14,13 @@ describe('SaveUserDatasPage Component', () => {
 
   test('should render the ToastContainer', () => {
     render(<SaveUserDatasPage />);
-    const toastContainer = screen.getByRole('region', { name: /notifications/i }); // Vérifie l'élément ARIA
+    const toastContainer = screen.getByRole('region', { name: /notifications/i });
     expect(toastContainer).toBeInTheDocument();
   });
 
   test('should render the container with correct styles', () => {
     render(<SaveUserDatasPage />);
-    const container = screen.getByTestId('save-datas-form-page-container'); // Trouve le conteneur parent
+    const container = screen.getByTestId('save-datas-form-page-container');
     expect(container).toHaveStyle({
       height: '100vh',
       marginLeft: 'auto',

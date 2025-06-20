@@ -26,7 +26,7 @@ function AdminPage() {
 
     // Récupère le token du localStorage
     const token = localStorage.getItem('admin_token');
-
+    console.log("Token:", token);
     const toggleUserExpand = (userId) => {
         setExpandedUsers(prev => ({
             ...prev,
@@ -49,6 +49,9 @@ function AdminPage() {
     }, [token, API_URL]);
 
     useEffect(() => {
+        console.log("Token dans useEffect : ", token);
+        console.log("isAdmin dans useEffect : ", isAdmin);
+
         if (!token) {
             setIsAdmin(false);
             return;
@@ -59,6 +62,7 @@ function AdminPage() {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(res => {
+                console.log("Admin status response:", res.data);
                 setIsAdmin(res.data.isAdmin);
                 // Si admin, charger la liste des utilisateurs
                 if (res.data.isAdmin) {
@@ -70,7 +74,7 @@ function AdminPage() {
                 setMessage("Vous n'êtes pas autorisé à accéder à cette page");
                 setSuccess(false);
             });
-    }, [token, API_URL, fetchUsers]);
+    }, [token, API_URL, isAdmin, fetchUsers]);
 
     const handleSelect = (userId) => {
         setSelectedUsers(prev =>
