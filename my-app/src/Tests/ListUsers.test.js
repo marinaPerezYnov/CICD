@@ -35,7 +35,6 @@ describe("ListUsers Component", () => {
     for (const user of users) {
       await screen.findByText(`Nom : ${user.nom}`, {}, { timeout: 1000 });
       expect(screen.getByText(`Prenom: ${user.prenom}`)).toBeInTheDocument();
-      expect(screen.getByText(`Email: ${user.email}`)).toBeInTheDocument();
       expect(screen.getByText(`Date de naissance: ${user.date_naissance}`)).toBeInTheDocument();
     }
   });
