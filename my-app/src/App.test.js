@@ -2,36 +2,64 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-// Mock des composants
-jest.mock('./Component/Header', () => () => <div>Header</div>);
-jest.mock('./Pages/SaveUserDatasPage', () => () => <div>SaveUserDatasPage</div>);
-jest.mock('./Pages/UsersPage', () => () => <div>UsersPage</div>);
-jest.mock('./Pages/AdminPage', () => () => <div>AdminPage</div>);
-jest.mock('./Pages/ConnectionPage', () => () => <div>ConnectionPage</div>);
+// Mettre les mocks AVANT l'import d'App
+// Mock des composants avec des fonctions simplifiées
+jest.mock('./Component/Header', () => {
+  return function MockHeader() {
+    return <div>Header</div>;
+  };
+});
 
-// Mock de Routes et Route pour éviter les erreurs quand disableRouter=false
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  BrowserRouter: ({ children }) => <div data-testid="browser-router">{children}</div>,
-  Routes: ({ children }) => <div data-testid="routes">{children}</div>,
-  Route: () => <div data-testid="route"></div>
-}));
+jest.mock('./Pages/SaveUserDatasPage', () => {
+  return function MockSaveUserDatasPage() {
+    return <div>SaveUserDatasPage</div>;
+  };
+});
+
+jest.mock('./Pages/UsersPage', () => {
+  return function MockUsersPage() {
+    return <div>UsersPage</div>;
+  };
+});
+
+jest.mock('./Pages/AdminPage', () => {
+  return function MockAdminPage() {
+    return <div>AdminPage</div>;
+  };
+});
+
+jest.mock('./Pages/ConnectionPage', () => {
+  return function MockConnectionPage() {
+    return <div>ConnectionPage</div>;
+  };
+});
+
+// Mock de react-router-dom
+jest.mock('react-router-dom', () => {
+  const originalModule = jest.requireActual('react-router-dom');
+  
+  return {
+    ...originalModule,
+    BrowserRouter: function MockBrowserRouter({ children }) {
+      return <div data-testid="browser-router">{children}</div>;
+    },
+    Routes: function MockRoutes({ children }) {
+      return <div data-testid="routes">{children}</div>;
+    },
+    Route: function MockRoute() {
+      return <div data-testid="route"></div>;
+    }
+  };
+});
 
 describe('App Component', () => {
   test('rend la structure correcte avec disableRouter=true', () => {
-    // Quand disableRouter=true, App ne rend PAS Routes mais directement SaveUserDatasPage
-    // Modifions notre mock pour ce test spécifique
-    jest.resetModules();
-    jest.mock('../Pages/SaveUserDatasPage', () => () => <div>SaveUserDatasPage</div>);
-    
     const { container } = render(<App disableRouter={true} />);
     
     // Vérifier que la div a la classe App
     expect(container.firstChild).toHaveClass('App');
     
-    // En réalité, quand disableRouter=true, le JSX retourné ne contient pas Routes
-    // et donc SaveUserDatasPage n'est pas rendu correctement par notre mock
-    // On vérifie plutôt que Header n'est pas présent
+    // Vérifier que Header n'est pas présent
     expect(screen.queryByText('Header')).not.toBeInTheDocument();
   });
 

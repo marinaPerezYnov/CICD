@@ -8,8 +8,8 @@ jest.mock('axios');
 
 describe('ConnectionPage Component', () => {
   beforeEach(() => {
-    // Clear sessionStorage before each test
-    sessionStorage.clear();
+    // Clear localStorage before each test
+    localStorage.clear();
     jest.clearAllMocks();
   });
 
@@ -40,10 +40,10 @@ describe('ConnectionPage Component', () => {
     await waitFor(() => {
       expect(screen.getByText('Identifiants invalides')).toBeInTheDocument();
     });
-    expect(sessionStorage.getItem('admin_token')).toBeNull();
+    expect(localStorage.getItem('admin_token')).toBeNull();
   });
 
-  test('enregistre le token dans le sessionStorage lors d\'une connexion réussie', async () => {
+  test('enregistre le token dans le localStorage lors d\'une connexion réussie', async () => {
     const mockToken = 'fake-jwt-token';
     axios.post.mockResolvedValueOnce({
       data: {
@@ -60,7 +60,7 @@ describe('ConnectionPage Component', () => {
     await waitFor(() => {
       expect(screen.getByText('Connexion réussie !')).toBeInTheDocument();
     });
-    expect(sessionStorage.getItem('admin_token')).toBe(mockToken);
+    expect(localStorage.getItem('admin_token')).toBe(mockToken);
   });
 
   test('permet de basculer la visibilité du mot de passe', () => {
